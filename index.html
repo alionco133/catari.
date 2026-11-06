@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Móveis Catarinense | Gestão</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+<div class="app">
+    <aside class="sidebar">
+        <div class="logo">
+            <div class="logo-icon">MC</div>
+            <div>
+                <strong>MÓVEIS</strong>
+                <small>CATARINENSE</small>
+            </div>
+        </div>
+
+        <p class="menu-title">MENU PRINCIPAL</p>
+
+        <nav>
+            <button class="nav-link active" data-page="painel">▦ Painel</button>
+            <button class="nav-link" data-page="clientes">♙ Clientes</button>
+            <button class="nav-link" data-page="pedidos">▤ Pedidos</button>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="help">
+                <strong>Precisa de ajuda?</strong>
+                <p>Consulte as informações do sistema com sua equipe.</p>
+            </div>
+            <div class="user">
+                <div class="avatar">MC</div>
+                <div>
+                    <strong>Equipe MC</strong>
+                    <small>Administrador</small>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main">
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">MÓVEIS CATARINENSE</p>
+                <h1 id="page-title">Painel</h1>
+            </div>
+
+            <input type="search" id="global-search"
+                   placeholder="Buscar cliente ou pedido...">
+        </header>
+
+        <!-- PAINEL -->
+        <section class="page active" id="page-painel">
+            <div class="welcome">
+                <div>
+                    <h2>Visão geral</h2>
+                    <p>Acompanhe os pedidos e atividades da sua equipe.</p>
+                </div>
+                <button class="primary" data-new-order>＋ Novo pedido</button>
+            </div>
+
+            <div class="stats">
+                <article class="stat">
+                    <span>Total de pedidos</span>
+                    <strong id="stat-total">0</strong>
+                    <small>Pedidos cadastrados</small>
+                </article>
+                <article class="stat">
+                    <span>Em produção</span>
+                    <strong id="stat-production">0</strong>
+                    <small>Pedidos em andamento</small>
+                </article>
+                <article class="stat">
+                    <span>Prontos</span>
+                    <strong id="stat-ready">0</strong>
+                    <small>Aguardando entrega</small>
+                </article>
+                <article class="stat">
+                    <span>Clientes</span>
+                    <strong id="stat-clients">0</strong>
+                    <small>Clientes cadastrados</small>
+                </article>
+            </div>
+
+            <div class="section-heading">
+                <div>
+                    <h2>Acompanhamento de pedidos</h2>
+                    <p>Veja em qual etapa cada pedido está.</p>
+                </div>
+                <button class="text-button" data-page-link="pedidos">
+                    Ver todos os pedidos →
+                </button>
+            </div>
+
+            <div class="kanban" id="dashboard-kanban"></div>
+        </section>
+
+        <!-- CLIENTES -->
+        <section class="page" id="page-clientes">
+            <div class="welcome">
+                <div>
+                    <h2>Clientes e histórico</h2>
+                    <p>Consulte os clientes cadastrados e seu histórico de pedidos.</p>
+                </div>
+                <button class="primary" id="add-client">＋ Novo cliente</button>
+            </div>
+
+            <div class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <h3>Todos os clientes</h3>
+                        <p id="client-count">Clientes cadastrados</p>
+                    </div>
+                    <input type="search" id="client-search"
+                           placeholder="Buscar cliente...">
+                </div>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>CLIENTE</th>
+                                <th>CONTATO</th>
+                                <th>ÚLTIMO PEDIDO</th>
+                                <th>TOTAL DE PEDIDOS</th>
+                                <th>STATUS</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="clients-table"></tbody>
+                    </table>
+                </div>
+                <p id="clients-empty" class="empty hidden">
+                    Nenhum cliente encontrado.
+                </p>
+            </div>
+        </section>
+
+        <!-- PEDIDOS -->
+        <section class="page" id="page-pedidos">
+            <div class="welcome">
+                <div>
+                    <h2>Acompanhamento de pedidos</h2>
+                    <p>Gerencie os pedidos em cada etapa de produção.</p>
+                </div>
+                <button class="primary" data-new-order>＋ Novo pedido</button>
+            </div>
+
+            <div class="filters">
+                <input type="search" id="order-search"
+                       placeholder="Buscar por pedido ou cliente...">
+
+                <select id="status-filter">
+                    <option value="">Todos os status</option>
+                    <option>Orçamento</option>
+                    <option>Aprovado</option>
+                    <option>Em produção</option>
+                    <option>Pronto</option>
+                </select>
+            </div>
+
+            <div class="kanban" id="orders-kanban"></div>
+        </section>
+
+        <!-- DETALHES DO PEDIDO -->
+        <section class="page" id="page-detalhes">
+            <button class="back-button" data-page-link="pedidos">
+                ← Voltar aos pedidos
+            </button>
+
+            <div class="welcome">
+                <div>
+                    <h2 id="detail-title">Detalhes do pedido</h2>
+                    <p id="detail-subtitle">Informações do pedido selecionado.</p>
+                </div>
+                <button class="secondary" id="change-status">Alterar status</button>
+            </div>
+
+            <div class="detail-grid">
+                <div>
+                    <div class="panel detail-panel">
+                        <h3>Informações do cliente</h3>
+                        <div class="info-grid">
+                            <div><small>Nome</small><strong id="detail-client">—</strong></div>
+                            <div><small>Telefone</small><strong id="detail-phone">—</strong></div>
+                            <div><small>E-mail</small><strong id="detail-email">—</strong></div>
+                            <div><small>Endereço</small><strong id="detail-address">—</strong></div>
+                        </div>
+                    </div>
+
+                    <div class="panel detail-panel">
+                        <h3>Especificações do móvel</h3>
+                        <div class="info-grid">
+                            <div><small>Tipo de móvel</small><strong id="detail-furniture">—</strong></div>
+                            <div><small>Ambiente</small><strong id="detail-room">—</strong></div>
+                            <div><small>Material</small><strong id="detail-material">—</strong></div>
+                            <div><small>Medidas</small><strong id="detail-measures">—</strong></div>
+                        </div>
+                        <div class="notes">
+                            <small>Descrição do projeto</small>
+                            <p id="detail-description">—</p>
+                        </div>
+                        <div class="notes">
+                            <small>Observações internas</small>
+                            <p id="detail-notes">—</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="panel detail-panel">
+                        <h3>Resumo do pedido</h3>
+                        <div class="summary-line">
+                            <span>Status</span><strong id="detail-status">—</strong>
+                        </div>
+                        <div class="summary-line">
+                            <span>Data do pedido</span><strong id="detail-date">—</strong>
+                        </div>
+                        <div class="summary-line">
+                            <span>Previsão de entrega</span><strong id="detail-delivery">—</strong>
+                        </div>
+                        <div class="total">
+                            <small>Valor total</small>
+                            <strong id="detail-value">R$ 0,00</strong>
+                        </div>
+                    </div>
+
+                    <div class="panel detail-panel">
+                        <h3>Arquivos do projeto</h3>
+                        <p id="detail-files">Nenhum arquivo informado.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- MODAL NOVO PEDIDO -->
+<div class="modal-bg hidden" id="order-modal">
+    <form class="modal" id="order-form">
+        <div class="modal-heading">
+            <h2>Novo pedido</h2>
+            <button type="button" class="close" data-close>×</button>
+        </div>
+
+        <div class="form-grid">
+            <label class="full">Cliente
+                <select id="order-client" required></select>
+            </label>
+
+            <label>Tipo de móvel
+                <input id="order-furniture" required placeholder="Ex.: Guarda-roupa">
+            </label>
+
+            <label>Ambiente
+                <input id="order-room" placeholder="Ex.: Quarto">
+            </label>
+
+            <label>Material
+                <input id="order-material" placeholder="Ex.: MDF branco">
+            </label>
+
+            <label>Medidas
+                <input id="order-measures" placeholder="Ex.: 2,00 x 2,40 m">
+            </label>
+
+            <label>Valor (R$)
+                <input id="order-value" type="number" min="0" step="0.01" required>
+            </label>
+
+            <label>Previsão de entrega
+                <input id="order-delivery" type="date">
+            </label>
+
+            <label class="full">Descrição
+                <textarea id="order-description" rows="2"></textarea>
+            </label>
+
+            <label class="full">Observações internas
+                <textarea id="order-notes" rows="2"></textarea>
+            </label>
+        </div>
+
+        <div class="modal-actions">
+            <button type="button" class="secondary" data-close>Cancelar</button>
+            <button type="submit" class="primary">Salvar pedido</button>
+        </div>
+    </form>
+</div>
+
+<!-- MODAL NOVO CLIENTE -->
+<div class="modal-bg hidden" id="client-modal">
+    <form class="modal small-modal" id="client-form">
+        <div class="modal-heading">
+            <h2>Novo cliente</h2>
+            <button type="button" class="close" data-close>×</button>
+        </div>
+
+        <div class="form-grid">
+            <label class="full">Nome completo
+                <input id="client-name" required>
+            </label>
+
+            <label>Telefone
+                <input id="client-phone" required>
+            </label>
+
+            <label>E-mail
+                <input id="client-email" type="email">
+            </label>
+
+            <label class="full">Endereço
+                <input id="client-address">
+            </label>
+        </div>
+
+        <div class="modal-actions">
+            <button type="button" class="secondary" data-close>Cancelar</button>
+            <button type="submit" class="primary">Salvar cliente</button>
+        </div>
+    </form>
+</div>
+
+<div id="toast" class="toast"></div>
+
+</body>
+</html>
